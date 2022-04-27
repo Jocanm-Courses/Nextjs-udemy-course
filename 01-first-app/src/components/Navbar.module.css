@@ -1,0 +1,13 @@
+.nav {
+    display: flex;
+    gap: 10px;
+}
+
+.nav a {
+    transition: color 1s ease-in-out;
+}
+
+.active {
+    color: #0070f3;
+    text-decoration: underline;
+}
