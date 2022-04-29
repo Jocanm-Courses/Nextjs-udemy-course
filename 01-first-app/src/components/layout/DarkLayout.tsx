@@ -1,6 +1,11 @@
 import React from 'react'
 
-export const DarkLayout = ({ children }) => {
+interface CompProps {
+    // children: React.ReactNode
+    children: JSX.Element | JSX.Element[]
+}
+
+export const DarkLayout = ({ children }: CompProps) => {
     return (
         <div
             style={{

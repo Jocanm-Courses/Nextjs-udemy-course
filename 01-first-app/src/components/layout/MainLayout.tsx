@@ -4,7 +4,12 @@ import React from 'react'
 import styles from './MainLayout.module.css'
 import { NavBar } from '../NavBar'
 
-export const MainLayout = ({ children }) => {
+interface CompProps {
+    // children: React.ReactNode
+    children: JSX.Element | JSX.Element[]
+}
+
+export const MainLayout = ({ children }: CompProps) => {
     return (
         <div className={styles.container}>
             <Head>

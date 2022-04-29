@@ -3,7 +3,12 @@ import React from 'react'
 import styles from './Navbar.module.css'
 import { useRouter } from 'next/router'
 
-export const ActiveLink = ({ text, route }) => {
+interface CompProps {
+    text: string
+    route: string
+}
+
+export const ActiveLink = ({ text, route }: CompProps) => {
 
     const { pathname } = useRouter()
 
@@ -11,7 +16,7 @@ export const ActiveLink = ({ text, route }) => {
 
     return (
         <Link href={route}>
-            <a className={isActive && styles.active}>
+            <a className={isActive ? styles.active : ""}>
                 {text}
             </a>
         </Link>
