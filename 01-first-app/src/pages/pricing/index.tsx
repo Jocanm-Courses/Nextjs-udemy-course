@@ -7,7 +7,7 @@ const PricinPage = () => {
     )
 }
 
-PricinPage.getLayout = function getLayout(page) {
+PricinPage.getLayout = function getLayout(page: JSX.Element) {
     return (
         <MainLayout>
             {page}
