@@ -14,7 +14,9 @@ interface Props {
 const PokemonInfo: NextPage<Props> = ({ pokemon }) => {
 
     return (
-        <MainLayout>
+        <MainLayout
+            title={`${pokemon.name} - Pokédex`}
+        >
             <Grid.Container
                 gap={1.4} css={{mt:"1rem"}}
             >

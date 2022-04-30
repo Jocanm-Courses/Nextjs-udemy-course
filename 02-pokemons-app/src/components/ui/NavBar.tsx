@@ -42,7 +42,9 @@ export const NavBar = () => {
             </Link>
 
 
-            <Text h3>Favoritos</Text>
+            <Link href="/favorites" passHref>
+                <Text h3 css={{cursor:"pointer"}}>Favoritos</Text>
+            </Link>
         </nav>
     )
 }
