@@ -1,13 +1,21 @@
 import React, { FC } from 'react'
 import { Card, Grid } from '@nextui-org/react';
+import { useRouter } from 'next/router';
 
 interface Props {
     pokemon: number
 }
 
 export const FavoriteCardPokemon: FC<Props> = ({ pokemon }) => {
+
+    const { push } = useRouter()
+
+    const onFavoriteCliked = () => {
+        push(`/pokemon/${pokemon}`)
+    }
+
     return (
-        <Grid xs={6} sm={3} md={2} xl={1}
+        <Grid onClick={onFavoriteCliked} xs={6} sm={3} md={2} xl={1}
         >
             <Card hoverable clickable css={{ p: "10" }}
             >
