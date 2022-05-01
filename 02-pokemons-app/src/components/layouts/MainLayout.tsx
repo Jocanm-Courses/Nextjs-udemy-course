@@ -7,7 +7,10 @@ interface CompProps {
     title?: string
 }
 
+const origin = typeof window !== 'undefined' ? window.location.origin : '';
+
 export const MainLayout = ({ children, title }: CompProps) => {
+
     return (
         <>
             <Head>
@@ -15,6 +18,9 @@ export const MainLayout = ({ children, title }: CompProps) => {
                 <meta name="author" content="Jose Luis Angarita" />
                 <meta name="description" content={`Información sobre el pokemón ${title}`} />
                 <meta name="keywords" content={`${title} xxxx, pokemon, pokedex`} />
+                <meta property="og:title" content={`Información sobre ${title}`} />
+                <meta property="og:description" content={`Esta es la información sobre ${title}`} />
+                <meta property="og:image" content={`${origin}/img/banner.png`} />
             </Head>
 
             <NavBar />
