@@ -5,6 +5,7 @@ import { pokeApi } from '../../apis';
 import { MainLayout } from '../../components/layouts';
 import { PokemonDetailProps } from '../../types/interfaces/pokemonDetailsInterface';
 import { existInFavorites, toggleFavorites } from '../../utils';
+import confetti from 'canvas-confetti' 
 
 interface Props {
     pokemon: PokemonDetailProps
@@ -17,6 +18,19 @@ const PokemonInfo: NextPage<Props> = ({ pokemon }) => {
     const onToggleFavorite = () => {
         toggleFavorites(pokemon.id);
         setIsFavorite(!isFavorite);
+
+        if(isFavorite) return;
+
+        confetti({
+            zIndex:999,
+            particleCount:100,
+            spread:160,
+            angle:-100,
+            origin:{
+                x:1,
+                y:0
+            },
+        })
     }
 
     return (
