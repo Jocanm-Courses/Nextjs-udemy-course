@@ -1,11 +1,10 @@
-import { GetStaticPaths, NextPage, GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
-import React from 'react';
+import { Button, Card, Container, Grid, Image, Text } from '@nextui-org/react';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import React, { useEffect, useState } from 'react';
 import { pokeApi } from '../../apis';
 import { MainLayout } from '../../components/layouts';
-import { PokemonListProps } from '../../types/interfaces';
-import { PokemonDetailProps, DreamWorld } from '../../types/interfaces/pokemonDetailsInterface';
-import { Grid, Card, Text, Button, Container, Image } from '@nextui-org/react';
+import { PokemonDetailProps } from '../../types/interfaces/pokemonDetailsInterface';
+import { existInFavorites, toggleFavorites } from '../../utils';
 
 interface Props {
     pokemon: PokemonDetailProps
@@ -13,12 +12,19 @@ interface Props {
 
 const PokemonInfo: NextPage<Props> = ({ pokemon }) => {
 
+    const [isFavorite, setIsFavorite] = useState(() => (existInFavorites(pokemon.id)))
+
+    const onToggleFavorite = () => {
+        toggleFavorites(pokemon.id);
+        setIsFavorite(!isFavorite);
+    }
+
     return (
         <MainLayout
             title={`${pokemon.name} - Pokédex`}
         >
             <Grid.Container
-                gap={1.4} css={{mt:"1rem"}}
+                gap={1.4} css={{ mt: "1rem" }}
             >
                 <Grid xs={12} sm={4}>
                     <Card hoverable css={{ p: "30px" }}>
@@ -40,10 +46,11 @@ const PokemonInfo: NextPage<Props> = ({ pokemon }) => {
                                 {pokemon.name}
                             </Text>
                             <Button
+                                onClick={onToggleFavorite}
                                 color="gradient"
-                                ghost
+                                ghost={!isFavorite}
                             >
-                                Guardar en favoritos
+                                {isFavorite ? "Remove from favorites" : "Add to favorites"}
                             </Button>
                         </Card.Header>
                         <Card.Body>
