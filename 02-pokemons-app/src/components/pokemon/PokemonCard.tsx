@@ -12,7 +12,8 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
     const { id, image, name } = pokemon
 
     return (
-        <Link href={`/pokemon/${id}`} passHref>
+        // <Link href={`/pokemon/${id}`} passHref>
+        <Link href={`/name/${name}`} passHref>
             <Grid xs={6} sm={3} md={2} xl={1} key={id}
             >
                 <Card hoverable clickable>
