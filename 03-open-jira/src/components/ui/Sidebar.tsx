@@ -2,18 +2,22 @@ import InboxIcon from '@mui/icons-material/InboxOutlined';
 import MailIcon from '@mui/icons-material/MailOutline';
 import { Drawer, Box, Typography, List, ListItem, ListItemText, Divider } from '@mui/material';
 import React from 'react'
+import { useUiContext } from '../../context/ui';
 
 const menuItems = [
     "Inbox", "Starred", "Sent Mail", "Drafts"
 ]
 
 export const Sidebar = () => {
+
+    const { sideOpen, closeSide } = useUiContext()
+
     return (
 
         <Drawer
             anchor='left'
-            onClose={() => { }}
-            open={true}
+            onClose={closeSide}
+            open={sideOpen}
         >
 
             <Box sx={{ width: 250 }}>
@@ -30,7 +34,7 @@ export const Sidebar = () => {
                             }
                             <ListItemText
                                 primary={text}
-                                sx={{marginLeft: '12px'}}
+                                sx={{ marginLeft: '12px' }}
                             />
                         </ListItem>
                     ))}
@@ -43,7 +47,7 @@ export const Sidebar = () => {
                                 index % 2 ? <InboxIcon /> : <MailIcon />
                             }
                             <ListItemText
-                                sx={{marginLeft: '12px'}}
+                                sx={{ marginLeft: '12px' }}
                                 primary={text}
                             />
                         </ListItem>
