@@ -3,10 +3,15 @@ import { PokemonDetailProps } from "../types/interfaces"
 
 export const getPokemonInfo = async (pokemon: string) => {
 
-    const { data: { id, name, sprites } } = await pokeApi.get<PokemonDetailProps>(`/pokemon/${pokemon}`)
+    try {
+        const { data: { id, name, sprites } } = await pokeApi.get<PokemonDetailProps>(`/pokemon/${pokemon}`)
 
-    return {
-        id, name, sprites
+        return {
+            id, name, sprites
+        }
+
+    } catch (error) {
+        return null;
     }
 
 
