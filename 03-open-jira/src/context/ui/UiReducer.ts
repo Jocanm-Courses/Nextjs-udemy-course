@@ -4,7 +4,8 @@ import { UiState } from './';
 type UiAction =
     | { type: "OPEN-SIDEBAR" }
     | { type: "CLOSE-SIDEBAR" }
-    | { type: "SET-IS-ADDING", payload: boolean };
+    | { type: "SET-IS-ADDING", payload: boolean }
+    | { type: "SET-IS-DRAGGING", payload: boolean }
 
 export const uiReducer = (state: UiState, action: UiAction): UiState => {
 
@@ -19,6 +20,9 @@ export const uiReducer = (state: UiState, action: UiAction): UiState => {
 
         case "SET-IS-ADDING":
             return { ...state, isAdding: action.payload };
+        
+        case "SET-IS-DRAGGING":
+            return { ...state, isDragging: action.payload };
 
         default:
             return state;
