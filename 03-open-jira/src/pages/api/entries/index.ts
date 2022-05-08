@@ -63,4 +63,4 @@ export const createEntry = async (req: NextApiRequest, res: NextApiResponse<data
 
     }
 
-} 
+}

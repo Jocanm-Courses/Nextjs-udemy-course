@@ -31,7 +31,7 @@ const HomePage: NextPage = () => {
                     <Card sx={{ height: "calc(100vh - 100px)" }}>
                         <CardHeader title="Completadas " />
                         <EntriesList 
-                            status="finished"
+                            status="completed"
                         />
                     </Card>
                 </Grid>
