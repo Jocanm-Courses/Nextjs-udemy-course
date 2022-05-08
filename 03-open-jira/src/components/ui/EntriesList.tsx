@@ -26,7 +26,7 @@ export const EntriesList: FC<Props> = ({ status }) => {
 
     const onDropEntry = (e: React.DragEvent<HTMLDivElement>) => {
         const id = e.dataTransfer.getData('text/plain')
-        const entry = entries.find(entry => entry._id === id)!
+        const entry = entries.find(entry => entry.id === id)!
         entry.status = status
         updateEntry(entry)
         setIsDragging(false)
@@ -45,7 +45,7 @@ export const EntriesList: FC<Props> = ({ status }) => {
                         filteredEntries.map(entry => (
                             <EntryCard
                                 entry={entry}
-                                key={entry._id}
+                                key={entry.id}
                             />
                         ))
                     }

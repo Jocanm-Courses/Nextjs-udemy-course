@@ -13,7 +13,7 @@ export const EntryCard: FC<Props> = ({ entry }) => {
     const { setIsDragging } = useUiContext()
 
     const onDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-        e.dataTransfer.setData('text/plain', entry._id)
+        e.dataTransfer.setData('text/plain', entry.id)
         setIsDragging(true)
     }
     
