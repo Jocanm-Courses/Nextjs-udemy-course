@@ -13,24 +13,7 @@ export interface Props {
 
 const ENTRIES_INIT_STATE: EntriesState = {
     entries: [
-        {
-            _id: uuidv4(),
-            description: "lorem ipsum dolo uis",
-            createdAt: (Date.now()).toFixed(),
-            status: "pending"
-        },
-        {
-            _id: uuidv4(),
-            description: "lorem ipsum dolo uis",
-            createdAt: (Date.now() - 1000000).toFixed(),
-            status: "finished"
-        },
-        {
-            _id: uuidv4(),
-            description: "lorem ipsum dolo uis",
-            createdAt: (Date.now() - 100000).toFixed(),
-            status: "in-progress"
-        },
+        
     ]
 }
 
