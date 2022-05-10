@@ -5,7 +5,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 export default function indextPage({ pageComponentProps }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     return (
         <>
-
+            123213
         </>
     )
 }
