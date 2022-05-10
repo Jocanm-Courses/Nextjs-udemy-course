@@ -4,6 +4,7 @@ import { Entry } from '../../interfaces'
 import { FC } from 'react';
 import { useUiContext } from '../../context/ui';
 import { useRouter } from 'next/router';
+import { getTimeSinceNow } from '../../utils';
 
 interface Props {
     entry: Entry
@@ -44,7 +45,7 @@ export const EntryCard: FC<Props> = ({ entry }) => {
 
                 <CardActions sx={{ display: "flex", justifyContent: "end", pr: 2 }}>
                     <Typography variant='body2'>
-                        hace 30 min
+                        {getTimeSinceNow(entry.createdAt)}
                     </Typography>
                 </CardActions>
             </CardActionArea>

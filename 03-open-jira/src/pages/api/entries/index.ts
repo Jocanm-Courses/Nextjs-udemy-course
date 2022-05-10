@@ -30,7 +30,7 @@ const getEntries = async (res: NextApiResponse<data>) => {
 
     const entries = await prisma.entry.findMany({
         orderBy: {
-            createdAt: "asc"
+            createdAt: "desc"
         }
     })
 

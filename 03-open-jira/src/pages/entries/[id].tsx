@@ -4,10 +4,11 @@ import { Button, capitalize, Card, CardActions, CardContent, CardHeader, FormCon
 import { GetServerSideProps, NextPage } from 'next';
 import React, { useMemo, useState } from 'react';
 import { Layout } from '../../components/layouts';
+import { useEntriesContext } from '../../context/entries';
 import { getEntrybYId } from '../../database';
 import { EntryStatus } from '../../interfaces';
-import { prisma } from '../../lib'
 import { Entry } from '../../interfaces/entries';
+import { getTimeSinceNow } from '../../utils';
 
 const validStatus: EntryStatus[] = ["completed", "inProgress", "pending"]
 
@@ -17,6 +18,8 @@ interface Props {
 }
 
 const EntryPage: NextPage<Props> = ({ entry }) => {
+
+    const { updateEntry } = useEntriesContext()
 
     const [inputValue, setInputValue] = useState(entry.description)
     const [status, setStatus] = useState<EntryStatus>(entry.status)
@@ -34,10 +37,20 @@ const EntryPage: NextPage<Props> = ({ entry }) => {
         setStatus(e.target.value as EntryStatus)
     }
 
-    const onSaved = () => { }
+    const onSaved = () => {
+        if(inputValue.trim().length === 0) return
+
+        const updatedEntry: Entry = {
+            ...entry,
+            description: inputValue,
+            status
+        }
+
+        updateEntry(updatedEntry, true)
+    }
 
     return (
-        <Layout title={inputValue.substring(0,20) + "..."}>
+        <Layout title={inputValue.substring(0, 20) + "..."}>
             <Grid
                 container
                 justifyContent="center"
@@ -48,7 +61,7 @@ const EntryPage: NextPage<Props> = ({ entry }) => {
                     <Card>
                         <CardHeader
                             title={`Entrada: ${inputValue}`}
-                            subheader={`Creada hace ${entry.createdAt}...`}
+                            subheader={`Creada ${getTimeSinceNow(entry.createdAt)}...`}
                         />
                         <CardContent>
                             <TextField
@@ -113,9 +126,6 @@ const EntryPage: NextPage<Props> = ({ entry }) => {
     )
 }
 
-// You should use getServerSideProps when:
-// - Only if you need to pre-render a page whose data must be fetched at request time
-
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     const { id } = params as { id: string }
@@ -124,7 +134,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     if (!entry) {
         return {
-            redirect:{
+            redirect: {
                 destination: '/',
                 permanent: false
             }
