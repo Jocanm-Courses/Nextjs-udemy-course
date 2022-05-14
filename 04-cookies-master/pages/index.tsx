@@ -1,10 +1,11 @@
 import React from 'react'
+import { Layout } from '../src/components/layout'
 
 const HomePage = () => {
     return (
-        <div className=''>
-            Home Page
-        </div>
+        <Layout>
+            <h1>Cookie Master</h1>
+        </Layout>
     )
 }
 
