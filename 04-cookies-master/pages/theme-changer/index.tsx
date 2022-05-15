@@ -1,6 +1,12 @@
 import { Card, CardContent, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
 import React, { useState } from 'react'
 import { Layout } from '../../src/components/layout'
+import Cookies from 'js-cookie'
+import { GetServerSideProps } from 'next'
+
+interface Props {
+
+}
 
 const ThemeChangerPage = () => {
 
@@ -8,6 +14,7 @@ const ThemeChangerPage = () => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCurrentTheme(event.target.value)
+        Cookies.set("theme", event.target.value)
     }
 
     return (
@@ -29,6 +36,20 @@ const ThemeChangerPage = () => {
             </Card>
         </Layout>
     )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+
+    const { theme = "light" } = req.cookies
+
+    console.log(theme)
+
+    return {
+        props: {
+
+        }
+    }
 }
 
 export default ThemeChangerPage
