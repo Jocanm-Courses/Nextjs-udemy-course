@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import React, { FC } from 'react'
-import { Navbar } from '../ui'
+import { Navbar, SideMenu } from '../ui'
 
 interface Props {
     title?: string
@@ -27,7 +27,7 @@ export const ShopLayout: FC<Props> = ({ title = "Teslo Shop", children, imageUrl
 
             <Navbar />
 
-            {/* TODO: sidebar */}
+            <SideMenu/>
 
             <main style={{
                 margin: "80px auto",
