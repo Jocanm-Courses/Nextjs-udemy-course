@@ -3,7 +3,7 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { ShopLayout } from '../../components/layouts'
-import { ProductSlideShow } from '../../components/products';
+import { ProductSlideShow, SizeSelector } from '../../components/products';
 import { ItemCounter } from '../../components/ui';
 import { initialData } from '../../database/products'
 
@@ -31,7 +31,10 @@ const SlugPage: NextPage = () => {
 
                         <Box sx={{ my: 2 }}>
                             <Typography variant="subtitle2">Cantidad</Typography>
-                            <ItemCounter/>
+                            <ItemCounter />
+                            <SizeSelector
+                                sizes={product.sizes}
+                            />
                         </Box>
 
                         <Button color="secondary" className="circular-btn">
