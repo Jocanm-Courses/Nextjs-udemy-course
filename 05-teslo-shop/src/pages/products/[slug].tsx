@@ -3,6 +3,8 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { ShopLayout } from '../../components/layouts'
+import { ProductSlideShow } from '../../components/products';
+import { ItemCounter } from '../../components/ui';
 import { initialData } from '../../database/products'
 
 const [product] = initialData.products
@@ -16,7 +18,9 @@ const SlugPage: NextPage = () => {
             <Grid container spacing={3}>
 
                 <Grid item xs={12} sm={7}>
-
+                    <ProductSlideShow
+                        images={product.images}
+                    />
                 </Grid>
 
                 <Grid item xs={12} sm={5}>
@@ -27,6 +31,7 @@ const SlugPage: NextPage = () => {
 
                         <Box sx={{ my: 2 }}>
                             <Typography variant="subtitle2">Cantidad</Typography>
+                            <ItemCounter/>
                         </Box>
 
                         <Button color="secondary" className="circular-btn">
