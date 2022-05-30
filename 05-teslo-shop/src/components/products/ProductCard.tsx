@@ -10,6 +10,7 @@ interface Props {
 export const ProductCard: FC<Props> = ({ product }) => {
 
     const [isHovered, setIsHovered] = useState(false)
+    const [isImageLoaded, setIsImageLoaded] = useState(false)
 
     const handleMouseEnter = () => {
         setIsHovered(true)
@@ -19,11 +20,15 @@ export const ProductCard: FC<Props> = ({ product }) => {
         setIsHovered(false)
     }
 
+    const handleImageLoad = () => {
+        setIsImageLoaded(true)
+    }
+
     const productImage = useMemo(() => {
 
         return !isHovered
-            ? `products/${product.images[0]}`
-            : `products/${product.images[1]}`
+            ? `/products/${product.images[0]}`
+            : `/products/${product.images[1]}`
 
     }, [isHovered, product.images])
 
@@ -43,12 +48,13 @@ export const ProductCard: FC<Props> = ({ product }) => {
                             component="img"
                             image={productImage}
                             alt={product.title}
+                            onLoad={handleImageLoad}
                         />
                     </MU.CardActionArea>
                 </Link>
             </MU.Card>
 
-            <MU.Box sx={{ mt: 1 }} className="fadeIn">
+            <MU.Box sx={{ mt: 1, display: isImageLoaded ? "block" : "none" }} className="fadeIn">
                 <MU.Typography fontWeight={700}>{product.title}</MU.Typography>
                 <MU.Typography fontWeight={500}>{`$${product.price}`}</MU.Typography>
             </MU.Box>
