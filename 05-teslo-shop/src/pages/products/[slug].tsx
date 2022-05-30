@@ -1,19 +1,12 @@
-import { Box, Button, Chip, Grid, Typography } from '@mui/material';
-import { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import React from 'react'
-import { ShopLayout } from '../../components/layouts'
+import { Box, Button, Grid, Typography } from '@mui/material';
+import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next';
+import React from 'react';
+import { ShopLayout } from '../../components/layouts';
 import { ProductSlideShow, SizeSelector } from '../../components/products';
 import { ItemCounter } from '../../components/ui';
-import { initialData } from '../../database/products'
+import { getProductBySlug } from '../../database';
 
-const products = initialData.products
-
-const SlugPage: NextPage = () => {
-
-    const { slug } = useRouter().query
-
-    const product = products.find(p => p.slug === slug)
+const SlugPage = ({ product }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
     return (
         <ShopLayout title={product?.title} pageDescription={product?.description}>
@@ -59,3 +52,26 @@ const SlugPage: NextPage = () => {
 }
 
 export default SlugPage
+
+
+export const getServerSideProps: GetServerSideProps = async ({ params }: GetServerSidePropsContext) => {
+
+    const { slug } = params as { slug: string }
+
+    const product = await getProductBySlug(slug)
+
+    if (!product) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {
+            product
+        }
+    }
+}
