@@ -16,3 +16,18 @@ export const getProductBySlug = async (slug: string): Promise<IProduct | null> =
         : null
 
 }
+
+interface ProductsSlugs {
+    slug: string
+}
+
+export const getAllProductsSlugs = async (): Promise<ProductsSlugs[]> => {
+
+    return await product.findMany({
+        select: {
+            slug: true
+        }
+    })
+
+
+}

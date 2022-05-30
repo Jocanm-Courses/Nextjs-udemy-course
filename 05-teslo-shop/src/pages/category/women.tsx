@@ -4,10 +4,11 @@ import { ShopLayout } from '../../components/layouts'
 import { ProductList } from '../../components/products'
 import { FullScreenLoading } from '../../components/ui'
 import { useProducts } from '../../hooks'
+import { IProduct } from '../../interfaces'
 
 const WomenPage = () => {
 
-    const { products, isLoading } = useProducts('/products?gender=women')
+    const { products = [], isLoading } = useProducts<IProduct[]>('/products?gender=women')
 
     return (
         <ShopLayout
