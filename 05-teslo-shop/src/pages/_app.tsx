@@ -4,6 +4,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material'
 import { lightTheme } from '../themes'
 import { SWRConfig } from 'swr'
 import { UiProvider } from '../context'
+import NextProgress from 'next-progress'
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <Component {...pageProps} />
                 </ThemeProvider>
             </UiProvider>
+            <NextProgress delay={300} options={{ showSpinner: false }} />
         </SWRConfig>
     )
 }

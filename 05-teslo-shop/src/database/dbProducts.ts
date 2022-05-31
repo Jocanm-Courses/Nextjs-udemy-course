@@ -31,3 +31,30 @@ export const getAllProductsSlugs = async (): Promise<ProductsSlugs[]> => {
 
 
 }
+
+export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
+
+    term = term.toLowerCase()
+
+    const products = await product.findMany({
+        where: {
+            OR: [
+                { slug: { contains: term } },
+                { tags: { has: term } }
+            ]
+        },
+        select: { title: true, images: true, inStock: true, price: true, slug: true, }
+    })
+
+    return JSON.parse(JSON.stringify(products))
+
+}
+
+
+export const getAllProducts = async (): Promise<IProduct[]> => {
+
+    const products = await product.findMany()
+
+    return JSON.parse(JSON.stringify(products))
+
+}
