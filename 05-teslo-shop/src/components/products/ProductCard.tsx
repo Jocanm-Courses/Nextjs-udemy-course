@@ -1,6 +1,6 @@
 import React, { FC, useMemo, useState } from 'react'
 import { IProduct } from '../../interfaces/products';
-import * as MU from '@mui/material';
+import * as M from '@mui/material';
 import Link from 'next/link';
 
 interface Props {
@@ -33,32 +33,43 @@ export const ProductCard: FC<Props> = ({ product }) => {
     }, [isHovered, product.images])
 
     return (
-        <MU.Grid
+        <M.Grid
             item
             xs={6}
             sm={4}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <MU.Card>
+            <M.Card>
                 <Link href={`/products/${product.slug}`} passHref prefetch={false}>
-                    <MU.CardActionArea>
-                        <MU.CardMedia
+
+                    <M.CardActionArea>
+
+                        {
+                            (product.inStock === 0) && (
+                                <M.Chip
+                                    color="primary"
+                                    label="No hay disponibles"
+                                    sx={{ position: "absolute", zIndex: 9, top: "10px", left: "10px" }}
+                                />
+                            )
+                        }
+                        <M.CardMedia
                             className="fadeIn"
                             component="img"
                             image={productImage}
                             alt={product.title}
                             onLoad={handleImageLoad}
                         />
-                    </MU.CardActionArea>
+                    </M.CardActionArea>
                 </Link>
-            </MU.Card>
+            </M.Card>
 
-            <MU.Box sx={{ mt: 1, display: isImageLoaded ? "block" : "none" }} className="fadeIn">
-                <MU.Typography fontWeight={700}>{product.title}</MU.Typography>
-                <MU.Typography fontWeight={500}>{`$${product.price}`}</MU.Typography>
-            </MU.Box>
+            <M.Box sx={{ mt: 1, display: isImageLoaded ? "block" : "none" }} className="fadeIn">
+                <M.Typography fontWeight={700}>{product.title}</M.Typography>
+                <M.Typography fontWeight={500}>{`$${product.price}`}</M.Typography>
+            </M.Box>
 
-        </MU.Grid>
+        </M.Grid>
     )
 }

@@ -1,12 +1,10 @@
-import * as MU from '@mui/material'
+import * as MU from '@mui/material';
 import { GetServerSideProps, NextPage } from 'next';
-import React from 'react'
-import { ShopLayout } from '../../components/layouts'
-import { ProductList } from '../../components/products'
-import { FullScreenLoading } from '../../components/ui'
-import { getAllProducts, getProductsByTerm } from '../../database'
-import { useProducts } from '../../hooks'
-import { IProduct } from '../../interfaces'
+import React from 'react';
+import { ShopLayout } from '../../components/layouts';
+import { ProductList } from '../../components/products';
+import { getAllProducts, getProductsByTerm } from '../../database';
+import { IProduct } from '../../interfaces';
 
 interface Props {
     products: IProduct[]

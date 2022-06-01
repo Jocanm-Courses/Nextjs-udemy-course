@@ -42,7 +42,8 @@ async function getProducts(req: NextApiRequest, res: NextApiResponse<Data>) {
                 images: true,
                 price: true,
                 title: true,
-                gender: true
+                gender: true,
+                inStock: true
             },
             where
         })

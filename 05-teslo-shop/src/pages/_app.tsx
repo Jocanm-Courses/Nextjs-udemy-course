@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { lightTheme } from '../themes'
 import { SWRConfig } from 'swr'
-import { UiProvider } from '../context'
+import { CartProvider, UiProvider } from '../context'
 import NextProgress from 'next-progress'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -13,12 +13,14 @@ function MyApp({ Component, pageProps }: AppProps) {
                 fetcher: (url, init) => fetch(url, init).then((r) => r.json()),
             }}
         >
-            <UiProvider>
-                <ThemeProvider theme={lightTheme}>
-                    <CssBaseline />
-                    <Component {...pageProps} />
-                </ThemeProvider>
-            </UiProvider>
+            <CartProvider>
+                <UiProvider>
+                    <ThemeProvider theme={lightTheme}>
+                        <CssBaseline />
+                        <Component {...pageProps} />
+                    </ThemeProvider>
+                </UiProvider>
+            </CartProvider>
             <NextProgress delay={300} options={{ showSpinner: false }} />
         </SWRConfig>
     )

@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography, Chip } from '@mui/material';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import React from 'react';
 import { ShopLayout } from '../../components/layouts';
@@ -37,11 +37,17 @@ const SlugPage: NextPage<IProps> = ({ product }) => {
                             />
                         </Box>
 
-                        <Button color="secondary" className="circular-btn">
-                            Agregar al carrito
-                        </Button>
+                        {
+                            product.inStock > 0
+                                ? (
+                                    <Button color="secondary" className="circular-btn">
+                                        Agregar al carrito
+                                    </Button>
+                                )
+                                : <Chip label="No hay disponibles" color="error" variant="outlined" />
+                        }
 
-                        {/* <Chip label="No hay disponibles" color="error" variant="outlined" /> */}
+
 
                         <Box sx={{ mt: 3 }}>
                             <Typography variant="subtitle2">Descripción</Typography>
