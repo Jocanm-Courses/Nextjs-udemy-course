@@ -5,10 +5,10 @@ export interface ICartProduct {
     description: string;
     image: string;
     price: number;
-    sizes: ISizes;
+    size?: ISizes;
     slug: string;
     title: string;
     gender: 'men' | 'women' | 'kid' | 'unisex'
-    quantity?: number
+    quantity: number
 }
 
