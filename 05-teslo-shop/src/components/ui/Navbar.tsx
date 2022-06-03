@@ -3,10 +3,11 @@ import React, { useState } from 'react'
 import NextLink from 'next/link'
 import { ClearOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material'
 import { useRouter } from 'next/router';
-import { useUiContext } from '../../context';
+import { useCartContext, useUiContext } from '../../context';
 
 export const Navbar = () => {
 
+    const { numberOfItems } = useCartContext()
     const [seachedTerm, setSeachedTerm] = useState("")
     const [isSearchedVisible, setIsSearchedVisible] = useState(false)
 
@@ -97,7 +98,7 @@ export const Navbar = () => {
                             (
                                 <MU.IconButton
                                     sx={{
-                                        display:{ xs: "flex", sm: "none" },
+                                        display: { xs: "flex", sm: "none" },
                                     }}
                                     className='fadeIn'
                                     onClick={() => setIsSearchedVisible(true)}
@@ -120,7 +121,9 @@ export const Navbar = () => {
                     <NextLink href="/cart" passHref>
                         <MU.Link>
                             <MU.IconButton>
-                                <MU.Badge badgeContent={2} color="secondary">
+                                <MU.Badge badgeContent={
+                                    numberOfItems <= 9 ? numberOfItems : "+9"
+                                } color="secondary">
                                     <ShoppingCartOutlined />
                                 </MU.Badge>
                             </MU.IconButton>

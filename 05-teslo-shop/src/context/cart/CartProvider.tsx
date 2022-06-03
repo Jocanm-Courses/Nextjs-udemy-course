@@ -6,10 +6,18 @@ import { setCartInCookies } from '../../helpers'
 
 export interface CartState {
     cart: ICartProduct[]
+    numberOfItems: number;
+    subTotal: number;
+    tax: number;
+    total: number;
 }
 
 const CART_INIT_STATE: CartState = {
-    cart: []
+    cart: [],
+    numberOfItems: 0,
+    subTotal: 0,
+    tax: 0,
+    total: 0
 }
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -20,9 +28,26 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const cart = Cookies.get('cart')
         const payload = JSON.parse(cart || "[]")
-        console.log(payload)
         dispatch({ type: 'Loadcart from cookies | storage', payload })
     }, [])
+
+    useEffect(() => {
+
+        const numberOfItems = state.cart.reduce((prev, current) => prev + current.quantity, 0)
+
+        const subTotal = state.cart.reduce((prev, current) => prev + current.quantity * current.price, 0)
+
+        const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE)
+
+        const orderSummary = {
+            numberOfItems,
+            subTotal,
+            tax: subTotal * taxRate,
+            total: subTotal * (1 + taxRate),
+        }
+
+        dispatch({ type: 'Update cart summary', payload: orderSummary })
+    }, [state.cart])
 
     //Functions
 
@@ -38,7 +63,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         if (!productInCartWithSameSize) {
             dispatch({ type: 'Add to cart', payload: [...state.cart, product] })
             setCartInCookies([...state.cart, product])
-            return 
+            return
         }
 
         //Acumular
@@ -55,17 +80,22 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
         dispatch({ type: 'Add to cart', payload: updatedProducts })
         setCartInCookies(updatedProducts)
-        return 
+        return
     }
 
     const updateCartQuantity = (product: ICartProduct) => {
         dispatch({ type: 'UpdateCartQuantity', payload: product })
     }
 
+    const removeFromCart = (product: ICartProduct) => {
+        dispatch({ type: 'Remove from cart', payload: product })
+    }
+
     const value = {
         ...state,
         addToCart,
-        updateCartQuantity
+        updateCartQuantity,
+        removeFromCart
     }
 
     return (
