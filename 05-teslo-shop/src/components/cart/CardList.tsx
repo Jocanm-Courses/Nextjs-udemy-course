@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { initialData } from '../../database/products';
 import { Typography, Grid, Link, CardActionArea, CardMedia, Box, Button } from '@mui/material';
 import NextLink from 'next/link';
 import { ItemCounter } from '../ui';

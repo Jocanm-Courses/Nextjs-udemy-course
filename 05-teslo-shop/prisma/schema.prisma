@@ -34,6 +34,11 @@ enum ProductGenderEnum {
     unisex
 }
 
+enum UserRoleEnum {
+    admin
+    client
+}
+
 model Product {
     id          String            @id @default(auto()) @map("_id") @db.ObjectId
     inStock     Float             @default(0)
@@ -48,4 +53,14 @@ model Product {
     title       String
     type        ProductTypesEnum
     gender      ProductGenderEnum
+}
+
+model User {
+    id        String       @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime     @default(now())
+    updatedAt DateTime     @updatedAt
+    email     String       @unique
+    name      String
+    password  String
+    role      UserRoleEnum
 }

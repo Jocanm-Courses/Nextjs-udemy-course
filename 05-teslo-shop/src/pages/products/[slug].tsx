@@ -6,7 +6,7 @@ import { ProductSlideShow, SizeSelector } from '../../components/products';
 import { ItemCounter } from '../../components/ui';
 import { getAllProductsSlugs, getProductBySlug } from '../../database';
 import { ICartProduct, IProduct } from '../../interfaces';
-import { ValidSizes } from '../../database/products';
+import { ValidSizes } from '../../database/seed-data';
 import { useRouter } from 'next/router';
 import { useCartContext } from '../../context/cart';
 

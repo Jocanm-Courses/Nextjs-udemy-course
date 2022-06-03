@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { ValidSizes } from '../../database/products'
+import { ValidSizes } from '../../database/seed-data'
 import { Box, Button } from '@mui/material';
 
 interface Props {
