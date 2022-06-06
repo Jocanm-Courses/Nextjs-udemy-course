@@ -65,6 +65,7 @@ export const MyTextField = ({ name, label, variant = "filled", ...rest }: Props)
     return (
         <TextField
             {...register(name)}
+            autoComplete="off"
             label={label}
             variant={variant}
             error={!!errors[name]}

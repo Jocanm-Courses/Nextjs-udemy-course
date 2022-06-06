@@ -34,6 +34,10 @@ export const isValidToken = (token: string): Promise<string> => {
         throw new Error('JWT seed is not defined')
     }
 
+    if(!token) {
+        return Promise.reject('Token is not defined')
+    }
+
     return new Promise((resolve, reject) => {
 
         try {

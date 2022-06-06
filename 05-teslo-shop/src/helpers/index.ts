@@ -1,3 +1,5 @@
 export * from './setCartInCookies'
 export * from './currency'
 export * from './jwt'
+export * from './countries'
+export * from './getAddresFromCookies'

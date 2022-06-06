@@ -12,17 +12,11 @@ export const ProductCard: FC<Props> = ({ product }) => {
     const [isHovered, setIsHovered] = useState(false)
     const [isImageLoaded, setIsImageLoaded] = useState(false)
 
-    const handleMouseEnter = () => {
-        setIsHovered(true)
-    }
+    const handleMouseEnter = () => { setIsHovered(true) }
 
-    const handleMouseLeave = () => {
-        setIsHovered(false)
-    }
+    const handleMouseLeave = () => { setIsHovered(false) }
 
-    const handleImageLoad = () => {
-        setIsImageLoaded(true)
-    }
+    const handleImageLoad = () => { setIsImageLoaded(true) }
 
     const productImage = useMemo(() => {
 

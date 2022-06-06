@@ -35,6 +35,8 @@ interface FormData extends Yup.InferType<typeof registerFormShape> { }
 const RegisterPage = () => {
 
     const router = useRouter()
+    const destination = router.query.p?.toString() || '/'
+
     const { registerUser } = useAuthContext()
     const [showError, setShowError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("second")
@@ -43,18 +45,14 @@ const RegisterPage = () => {
     })
 
     const onRegister = async ({ confirmPassword, ...rest }: FormData) => {
-
         setShowError(false)
         const { hasError, message } = await registerUser(rest)
-
         if (hasError) {
             setShowError(true)
             setErrorMessage(message!)
             return;
         }
-
-        router.replace('/')
-
+        router.push(destination)
     }
 
     return (
@@ -95,7 +93,7 @@ const RegisterPage = () => {
                                 </M.Button>
                             </M.Grid>
                             <M.Grid item xs={12}>
-                                <NextLink href="/auth/login" passHref>
+                                <NextLink href={destination ? `/auth/login?p=${destination}` : '/auth/login'} passHref>
                                     <M.Link>
                                         Inicia sesión
                                     </M.Link>

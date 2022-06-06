@@ -4,6 +4,7 @@ import { AuthContext, authReducer } from '.'
 import { testloApi } from '../../api';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export interface AuthState {
     isLoggedIn: boolean,
@@ -18,6 +19,7 @@ const CART_INIT_STATE: AuthState = {
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [state, dispatch] = useReducer(authReducer, CART_INIT_STATE)
+    const router = useRouter()
 
     useEffect(() => {
         refreshToken()
@@ -83,6 +85,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     }
 
+    const logoutUser = () => {
+        Cookies.remove('token')
+        Cookies.remove('cart')
+        router.reload()
+    }
+
     // const value = 
 
     return (
@@ -90,7 +98,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             ...state,
 
             loginUser,
-            registerUser
+            registerUser,
+            logoutUser
         }}>
             {children}
         </AuthContext.Provider>

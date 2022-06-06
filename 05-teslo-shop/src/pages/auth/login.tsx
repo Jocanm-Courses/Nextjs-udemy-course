@@ -13,8 +13,14 @@ import { useRouter } from 'next/router';
 
 
 const loginFormShape = Yup.object({
-    email: Yup.string().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, 'Invalid email address').required('Email is required'),
-    password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters long')
+    email: Yup
+        .string()
+        .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, 'Invalid email address')
+        .required('Email is required'),
+    password: Yup
+        .string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters long')
 })
 
 interface FormData extends Yup.InferType<typeof loginFormShape> { }
@@ -24,6 +30,7 @@ const LoginPage = () => {
     const [showError, setShowError] = useState(false)
     const { loginUser } = useAuthContext()
     const router = useRouter()
+    const destination = router.query.p?.toString() || '/'
 
     const methods = useForm<FormData>({
         resolver: yupResolver(loginFormShape)
@@ -32,11 +39,9 @@ const LoginPage = () => {
     const handleLogin = async (formData: FormData) => {
         setShowError(false)
         const successLogin = await loginUser(formData)
-        if (!successLogin) {
-            setShowError(true)
-        }else{
-            router.replace('/')
-        }
+        if (!successLogin) return setShowError(true)
+
+        router.push(destination)
     }
 
     return (
@@ -64,7 +69,7 @@ const LoginPage = () => {
                                 <MyTextField name="email" label="Correo" fullWidth />
                             </M.Grid>
                             <M.Grid item xs={12}>
-                                <MyTextField name="password" label="Contraseña" fullWidth type="password"/>
+                                <MyTextField name="password" label="Contraseña" fullWidth type="password" />
                             </M.Grid>
                             <M.Grid item xs={12}>
                                 <M.Button fullWidth color="secondary" className="circular-btn" size="large" type="submit">
@@ -72,7 +77,7 @@ const LoginPage = () => {
                                 </M.Button>
                             </M.Grid>
                             <M.Grid item xs={12}>
-                                <NextLink href="/auth/register" passHref>
+                                <NextLink href={destination ? `/auth/register?p=${destination}` : '/auth/register'} passHref>
                                     <M.Link>
                                         Registrate
                                     </M.Link>

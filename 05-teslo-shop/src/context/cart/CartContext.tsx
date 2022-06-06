@@ -8,6 +8,7 @@ interface ContextProps {
     subTotal: number;
     tax: number;
     total: number;
+    isLoaded: boolean;
     
     addToCart: (product: ICartProduct) => void
     updateCartQuantity: (product: ICartProduct) => void
