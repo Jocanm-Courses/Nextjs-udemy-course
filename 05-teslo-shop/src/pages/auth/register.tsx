@@ -10,6 +10,8 @@ import { ErrorOutline } from '@mui/icons-material';
 import { testloApi } from '../../api';
 import { useRouter } from 'next/router';
 import { useAuthContext } from '../../context';
+import { signIn, getSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 
 const registerFormShape = Yup.object({
     name: Yup
@@ -52,7 +54,13 @@ const RegisterPage = () => {
             setErrorMessage(message!)
             return;
         }
-        router.push(destination)
+
+        await signIn('credentials', {
+            email: rest.email,
+            password: confirmPassword,
+            callbackUrl: destination
+        })
+
     }
 
     return (
@@ -105,6 +113,26 @@ const RegisterPage = () => {
             </FormProvider>
         </AuthLayout>
     )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+
+    const session = await getSession({ req })
+
+    const { q = "/" } = query
+
+    if (session) {
+        return {
+            redirect: {
+                destination: q.toString(),
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
 }
 
 export default RegisterPage

@@ -6,8 +6,6 @@ import { AdressFormProps } from '../pages/checkout/address';
 export const getAddresFromCookies = (): AdressFormProps => {
     const data = JSON.parse(Cookies.get('address') || "{}") || {};
 
-    console.log(data)
-
     const {
         name = "",
         lastname = "",

@@ -10,6 +10,8 @@ import { testloApi } from '../../api';
 import { ErrorOutline } from '@mui/icons-material';
 import { useAuthContext } from '../../context';
 import { useRouter } from 'next/router';
+import { getSession, signIn } from 'next-auth/react';
+import { GetServerSideProps } from 'next'
 
 
 const loginFormShape = Yup.object({
@@ -36,12 +38,16 @@ const LoginPage = () => {
         resolver: yupResolver(loginFormShape)
     })
 
-    const handleLogin = async (formData: FormData) => {
-        setShowError(false)
-        const successLogin = await loginUser(formData)
-        if (!successLogin) return setShowError(true)
+    const handleLogin = async ({ email, password }: FormData) => {
+        // setShowError(false)
+        // const successLogin = await loginUser(formData)
+        // if (!successLogin) return setShowError(true)
 
-        router.push(destination)
+        // router.push(destination)
+
+        await signIn('credentials', {
+            email, password, callbackUrl: destination
+        })
     }
 
     return (
@@ -89,6 +95,26 @@ const LoginPage = () => {
             </FormProvider>
         </AuthLayout>
     )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+
+    const session = await getSession({ req })
+
+    const { q = "/" } = query
+
+    if (session) {
+        return {
+            redirect: {
+                destination: q.toString(),
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
 }
 
 export default LoginPage

@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as M from '@mui/material';
-import Cookies from 'js-cookie';
 import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import { ShopLayout } from '../../components/layouts';
 import { MyTextField } from '../../components/ui';
 import { useCartContext } from '../../context';
-import { countries, getAddresFromCookies, isValidToken } from '../../helpers';
+import { countries, getAddresFromCookies } from '../../helpers';
 
 const schema = Yup.object({
     name: Yup
@@ -54,7 +54,7 @@ const Address = () => {
 
     const { handleSubmit } = methods
 
-    const onSubmit = (data: AdressFormProps) => {        
+    const onSubmit = (data: AdressFormProps) => {
         updateAddress(data)
         router.push('/checkout/summary')
     }
@@ -130,18 +130,9 @@ const Address = () => {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
-    const { token = "" } = req.cookies;
+    const session = await getSession({ req })
 
-    let isValid = false;
-
-    try {
-        await isValidToken(token)
-        isValid = true;
-    } catch {
-        isValid = false;
-    }
-
-    if (!isValid) {
+    if (!session) {
         return {
             redirect: {
                 destination: '/auth/login?p=/checkout/address',
@@ -151,9 +142,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     }
 
     return {
-        props: {
-
-        }
+        props: {}
     }
 }
 

@@ -10,9 +10,6 @@ interface Props {
 }
 
 export const ShopLayout: FC<Props> = ({ title = "Teslo Shop", children, imageUrl, pageDescription }) => {
-
-
-
     return (
         <>
 

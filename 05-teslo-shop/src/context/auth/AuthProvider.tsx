@@ -5,6 +5,7 @@ import { testloApi } from '../../api';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 export interface AuthState {
     isLoggedIn: boolean,
@@ -18,12 +19,20 @@ const CART_INIT_STATE: AuthState = {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
+    const { data, status } = useSession()
+    console.log(data)
     const [state, dispatch] = useReducer(authReducer, CART_INIT_STATE)
     const router = useRouter()
 
     useEffect(() => {
-        refreshToken()
-    }, [])
+        if (status === "authenticated") {
+            dispatch({ type: 'Login', payload: data?.user as IUser })
+        }
+    }, [data, status])
+
+    // useEffect(() => {
+    //     refreshToken()
+    // }, [])
 
     const refreshToken = async () => {
 

@@ -1,14 +1,16 @@
-import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
-import { AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined } from "@mui/icons-material"
-import { useAuthContext, useUiContext } from '../../context';
+import { AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined } from "@mui/icons-material";
+import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from "@mui/material";
+import Cookies from 'js-cookie';
+import { signOut } from "next-auth/react";
 import { useRouter } from 'next/router';
 import { useState } from "react";
+import { useAuthContext, useUiContext } from '../../context';
 
 
 export const SideMenu = () => {
 
     const { isMenuOpen, toogleMenu } = useUiContext()
-    const { isLoggedIn, user, logoutUser } = useAuthContext()
+    const { isLoggedIn, user } = useAuthContext()
     const { push, asPath } = useRouter()
 
     const [seachedTerm, setSeachedTerm] = useState("")
@@ -31,6 +33,14 @@ export const SideMenu = () => {
 
     const onLogin = () => {
         navigateTo(`/auth/login?p=${asPath}`)
+    }
+
+    const onLogout = () => {
+        Cookies.remove('address')
+        Cookies.remove('cart')
+        signOut({
+            callbackUrl: '/',
+        })
     }
 
     return (
@@ -129,7 +139,7 @@ export const SideMenu = () => {
                                     <ListItemText primary={'Ingresar'} />
                                 </ListItem>
                             ) : (
-                                <ListItem button onClick={logoutUser}>
+                                <ListItem button onClick={onLogout}>
                                     <ListItemIcon>
                                         <LoginOutlined />
                                     </ListItemIcon>
