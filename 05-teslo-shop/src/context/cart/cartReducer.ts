@@ -1,12 +1,15 @@
 import { setCartInCookies } from "../../helpers";
 import { ICartProduct } from "../../interfaces";
 import { CartState } from "./CartProvider";
+import { AdressFormProps } from '../../pages/checkout/address';
 
 type CartActionType =
     | { type: "Loadcart from cookies | storage", payload: ICartProduct[] }
     | { type: "Add to cart", payload: ICartProduct[] }
     | { type: "UpdateCartQuantity", payload: ICartProduct }
     | { type: "Remove from cart", payload: ICartProduct }
+    | { type: "Load address info", payload: AdressFormProps }
+    | { type: "Update address", payload: AdressFormProps }
     | {
         type: "Update cart summary",
         payload: {
@@ -68,6 +71,13 @@ export const cartReducer: reducerType = (state, action) => {
             return {
                 ...state,
                 ...action.payload
+            }
+
+        case "Update address":
+        case "Load address info":
+            return {
+                ...state,
+                shippingAddress: action.payload
             }
 
         default:

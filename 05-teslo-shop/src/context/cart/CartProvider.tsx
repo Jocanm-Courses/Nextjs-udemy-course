@@ -3,6 +3,8 @@ import { ICartProduct } from '../../interfaces'
 import { CartContext, cartReducer } from './'
 import Cookies from 'js-cookie'
 import { setCartInCookies } from '../../helpers'
+import { AdressFormProps } from '../../pages/checkout/address'
+import { getAddresFromCookies } from '../../helpers/getAddresFromCookies';
 
 export interface CartState {
     cart: ICartProduct[]
@@ -11,6 +13,8 @@ export interface CartState {
     tax: number;
     total: number;
     isLoaded: boolean;
+
+    shippingAddress?: AdressFormProps;
 }
 
 const CART_INIT_STATE: CartState = {
@@ -19,7 +23,9 @@ const CART_INIT_STATE: CartState = {
     subTotal: 0,
     tax: 0,
     total: 0,
-    isLoaded: false
+    isLoaded: false,
+
+    shippingAddress: undefined
 }
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -49,6 +55,17 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
         dispatch({ type: 'Update cart summary', payload: orderSummary })
     }, [state.cart])
+
+    useEffect(() => {
+
+        const addresInfo = {
+            ...getAddresFromCookies(),
+            country: ""
+        }
+
+        dispatch({ type: 'Load address info', payload: addresInfo })
+
+    }, [])
 
     //Functions
 
@@ -92,11 +109,17 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch({ type: 'Remove from cart', payload: product })
     }
 
+    const updateAddress = (address: AdressFormProps) => {
+        Cookies.set('address', JSON.stringify(address))
+        dispatch({ type: 'Update address', payload: address })
+    }
+
     const value = {
         ...state,
         addToCart,
         updateCartQuantity,
-        removeFromCart
+        removeFromCart,
+        updateAddress
     }
 
     return (

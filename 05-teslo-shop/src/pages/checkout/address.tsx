@@ -8,6 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { ShopLayout } from '../../components/layouts';
 import { MyTextField } from '../../components/ui';
+import { useCartContext } from '../../context';
 import { countries, getAddresFromCookies, isValidToken } from '../../helpers';
 
 const schema = Yup.object({
@@ -36,13 +37,14 @@ const schema = Yup.object({
         .required('Phone is required'),
 })
 
-export interface FormProps extends Yup.InferType<typeof schema> { }
+export interface AdressFormProps extends Yup.InferType<typeof schema> { }
 
 const Address = () => {
 
+    const { updateAddress } = useCartContext()
     const router = useRouter()
 
-    const methods = useForm<FormProps>({
+    const methods = useForm<AdressFormProps>({
         resolver: yupResolver(schema),
         defaultValues: {
             ...getAddresFromCookies(),
@@ -52,8 +54,8 @@ const Address = () => {
 
     const { handleSubmit } = methods
 
-    const onSubmit = (data: FormProps) => {
-        Cookies.set('address', JSON.stringify(data))
+    const onSubmit = (data: AdressFormProps) => {        
+        updateAddress(data)
         router.push('/checkout/summary')
     }
 

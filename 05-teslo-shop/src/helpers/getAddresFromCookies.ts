@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie';
-import { FormProps } from '../pages/checkout/address';
+import { AdressFormProps } from '../pages/checkout/address';
 
 
 
-export const getAddresFromCookies = (): FormProps => {
+export const getAddresFromCookies = (): AdressFormProps => {
     const data = JSON.parse(Cookies.get('address') || "{}") || {};
 
     console.log(data)
@@ -17,7 +17,7 @@ export const getAddresFromCookies = (): FormProps => {
         country = "",
         city = "",
         phone = ""
-    } = data as FormProps;
+    } = data as AdressFormProps;
 
     return {
         name,
