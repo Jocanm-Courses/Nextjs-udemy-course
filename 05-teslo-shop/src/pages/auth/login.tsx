@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as M from '@mui/material';
 import { AuthLayout } from '../../components/layouts/AuthLayout';
 import NextLink from 'next/link';
@@ -10,9 +10,9 @@ import { testloApi } from '../../api';
 import { ErrorOutline } from '@mui/icons-material';
 import { useAuthContext } from '../../context';
 import { useRouter } from 'next/router';
-import { getSession, signIn } from 'next-auth/react';
+import { getProviders, getSession, signIn } from 'next-auth/react';
 import { GetServerSideProps } from 'next'
-
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 const loginFormShape = Yup.object({
     email: Yup
@@ -30,6 +30,7 @@ interface FormData extends Yup.InferType<typeof loginFormShape> { }
 const LoginPage = () => {
 
     const [showError, setShowError] = useState(false)
+    const [providers, setProviders] = useState<any>({})
     const { loginUser } = useAuthContext()
     const router = useRouter()
     const destination = router.query.p?.toString() || '/'
@@ -49,6 +50,18 @@ const LoginPage = () => {
             email, password, callbackUrl: destination
         })
     }
+
+    const loginWithGithub = async () => {
+        await signIn('github',{
+            callbackUrl: destination
+        })
+    }
+
+    useEffect(() => {
+        getProviders().then(prov => {
+            setProviders(prov)
+        })
+    }, [])
 
     return (
         <AuthLayout title="Ingresar">
@@ -82,6 +95,7 @@ const LoginPage = () => {
                                     Ingresar
                                 </M.Button>
                             </M.Grid>
+
                             <M.Grid item xs={12}>
                                 <NextLink href={destination ? `/auth/register?p=${destination}` : '/auth/register'} passHref>
                                     <M.Link>
@@ -89,6 +103,14 @@ const LoginPage = () => {
                                     </M.Link>
                                 </NextLink>
                             </M.Grid>
+
+                            <M.Grid item xs={12}>
+                                <M.Divider sx={{ width: "100%", mb: 2 }} />
+                                <M.Button variant="outlined" fullWidth color="primary" onClick={loginWithGithub}>
+                                    {<GitHubIcon />}
+                                </M.Button>
+                            </M.Grid>
+
                         </M.Grid>
                     </M.Box>
                 </form>
