@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react'
-import * as M from '@mui/material';
-import { AuthLayout } from '../../components/layouts/AuthLayout';
-import NextLink from 'next/link';
-import { useForm, FormProvider } from 'react-hook-form'
-import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { MyTextField } from '../../components/ui';
-import { testloApi } from '../../api';
 import { ErrorOutline } from '@mui/icons-material';
-import { useAuthContext } from '../../context';
-import { useRouter } from 'next/router';
-import { getProviders, getSession, signIn } from 'next-auth/react';
-import { GetServerSideProps } from 'next'
 import GitHubIcon from '@mui/icons-material/GitHub';
+import * as M from '@mui/material';
+import { GetServerSideProps } from 'next';
+import { getProviders, getSession, signIn } from 'next-auth/react';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+import { AuthLayout } from '../../components/layouts/AuthLayout';
+import { MyTextField } from '../../components/ui';
+import { useAuthContext } from '../../context';
+
+interface SignInRes {
+    error: string
+    ok: boolean
+    status: number
+    url: string | null
+}
 
 const loginFormShape = Yup.object({
     email: Yup
@@ -30,6 +36,7 @@ interface FormData extends Yup.InferType<typeof loginFormShape> { }
 const LoginPage = () => {
 
     const [showError, setShowError] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [providers, setProviders] = useState<any>({})
     const { loginUser } = useAuthContext()
     const router = useRouter()
@@ -40,20 +47,26 @@ const LoginPage = () => {
     })
 
     const handleLogin = async ({ email, password }: FormData) => {
-        // setShowError(false)
-        // const successLogin = await loginUser(formData)
-        // if (!successLogin) return setShowError(true)
-
-        // router.push(destination)
-
-        await signIn('credentials', {
-            email, password, callbackUrl: destination
+        setIsLoading(true)
+        //@ts-ignore
+        const { ok }: SignInRes = await signIn('credentials', {
+            email, password,
+            redirect: false
         })
+        setIsLoading(false)
+
+        if (!ok) {
+            setShowError(true)
+            return;
+        }
+
+        router.push(destination)
+
     }
 
     const loginWithGithub = async () => {
-        await signIn('github',{
-            callbackUrl: destination
+        signIn('github', {
+            callbackUrl: destination,
         })
     }
 
@@ -80,6 +93,7 @@ const LoginPage = () => {
                                             color="error"
                                             className="fadeIn"
                                             icon={<ErrorOutline />}
+                                            sx={{mx:"auto"}}
                                         />
                                     )
                                 }
@@ -92,7 +106,11 @@ const LoginPage = () => {
                             </M.Grid>
                             <M.Grid item xs={12}>
                                 <M.Button fullWidth color="secondary" className="circular-btn" size="large" type="submit">
-                                    Ingresar
+                                    {
+                                        isLoading
+                                            ? "Cargando.."
+                                            : "Ingresar"
+                                    }
                                 </M.Button>
                             </M.Grid>
 

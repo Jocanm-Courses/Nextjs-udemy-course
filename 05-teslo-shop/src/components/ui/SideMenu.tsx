@@ -10,7 +10,7 @@ import { useAuthContext, useUiContext } from '../../context';
 export const SideMenu = () => {
 
     const { isMenuOpen, toogleMenu } = useUiContext()
-    const { isLoggedIn, user } = useAuthContext()
+    const { isLoggedIn, user, logoutUser } = useAuthContext()
     const { push, asPath } = useRouter()
 
     const [seachedTerm, setSeachedTerm] = useState("")
@@ -36,11 +36,8 @@ export const SideMenu = () => {
     }
 
     const onLogout = () => {
-        Cookies.remove('address')
-        Cookies.remove('cart')
-        signOut({
-            callbackUrl: '/',
-        })
+        logoutUser()
+        toogleMenu()
     }
 
     return (

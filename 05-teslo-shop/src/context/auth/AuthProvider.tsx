@@ -5,7 +5,7 @@ import { testloApi } from '../../api';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 export interface AuthState {
     isLoggedIn: boolean,
@@ -94,10 +94,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     }
 
-    const logoutUser = () => {
+    const logoutUser = async () => {
         Cookies.remove('token')
         Cookies.remove('cart')
-        router.reload()
+        await signOut({ redirect: false })
+        dispatch({ type: 'Logout' })
+        router.push('/')
     }
 
     // const value = 
